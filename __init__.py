@@ -75,7 +75,12 @@ _classes = [
     gui.CollisionCollectionGizmoGroup,
     gui.RoadSign2DFXGizmoGroup,
     gui.Escalator2DFXGizmoGroup,
-    map_importer.Map_Import_Operator
+    map_importer.Map_Import_Operator,
+    gui.EXPORT_OT_ipl,
+    gui.EXPORT_OT_ide,
+    gui.IDEObjectProps,
+    gui.IPLObjectProps,
+    gui.MapObjectPanel
 ]
 
 _draw_3d_handler = None
@@ -97,9 +102,13 @@ def register():
     bpy.types.Material.dff = bpy.props.PointerProperty(type=gui.DFFMaterialProps)
     bpy.types.Object.dff = bpy.props.PointerProperty(type=gui.DFFObjectProps)
     bpy.types.Collection.dff = bpy.props.PointerProperty(type=gui.DFFCollectionProps)
+    bpy.types.Object.ide = bpy.props.PointerProperty(type=gui.IDEObjectProps)
+    bpy.types.Object.ipl = bpy.props.PointerProperty(type=gui.IPLObjectProps)
 
     bpy.types.TOPBAR_MT_file_import.append(gui.import_dff_func)
     bpy.types.TOPBAR_MT_file_export.append(gui.export_dff_func)
+    bpy.types.TOPBAR_MT_file_export.append(gui.export_ipl_func)
+    bpy.types.TOPBAR_MT_file_export.append(gui.export_ide_func)
     bpy.types.OUTLINER_MT_collection.append(gui.export_col_outliner)
     bpy.types.OUTLINER_MT_object.append(gui.export_dff_outliner)
     bpy.types.VIEW3D_MT_edit_armature.append(gui.edit_armature_dff_func)
@@ -119,9 +128,13 @@ def unregister():
     del bpy.types.Material.dff
     del bpy.types.Object.dff
     del bpy.types.Collection.dff
+    del bpy.types.Object.ide
+    del bpy.types.Object.ipl
 
     bpy.types.TOPBAR_MT_file_import.remove(gui.import_dff_func)
     bpy.types.TOPBAR_MT_file_export.remove(gui.export_dff_func)
+    bpy.types.TOPBAR_MT_file_export.remove(gui.export_ipl_func)
+    bpy.types.TOPBAR_MT_file_export.remove(gui.export_ide_func)
     bpy.types.OUTLINER_MT_collection.remove(gui.export_col_outliner)
     bpy.types.OUTLINER_MT_object.remove(gui.export_dff_outliner)
     bpy.types.VIEW3D_MT_edit_armature.remove(gui.edit_armature_dff_func)
