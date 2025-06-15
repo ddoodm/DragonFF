@@ -37,22 +37,20 @@ class IPLExporter:
             objects = context.scene.objects
             
         for obj in objects:
-            # Only export objects that have IPL data
-            if 'ipl_id' in obj.dff and obj.dff.type == "OBJ":
-                # Only export root objects (no parent)
-                if not obj.parent:
-                    objects_to_export.append(obj)
+            # Export objects that have an ID set
+            if hasattr(obj, 'ide') and obj.ide.obj_id and not obj.parent:
+                objects_to_export.append(obj)
                     
         return objects_to_export
     
     def format_inst_line(self, obj):
         """Format an object as an inst line based on game version"""
         
-        # Get stored IPL data
-        obj_id = obj.dff.get('ipl_id', '0')
-        model_name = obj.dff.get('ipl_model', obj.name)
-        interior = obj.dff.get('ipl_interior', '0')
-        lod = obj.dff.get('ipl_lod', '-1')
+        # Get data from ide/ipl properties
+        obj_id = obj.ide.obj_id
+        model_name = obj.ide.model_name or obj.name
+        interior = obj.ipl.interior or '0'
+        lod = obj.ipl.lod or '-1'
         
         # Get transformation data
         loc = obj.location
