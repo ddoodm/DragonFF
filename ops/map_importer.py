@@ -104,6 +104,13 @@ class Map_Import_Operator(bpy.types.Operator):
                     Map_Import_Operator.apply_transformation_to_object(
                         obj, inst
                     )
+                    # Store IPL/IDE data for round-trip export
+                    obj.dff['ipl_id'] = inst.id
+                    obj.dff['ipl_model'] = self._object_data[inst.id].modelName
+                    if hasattr(inst, 'interior'):
+                        obj.dff['ipl_interior'] = inst.interior
+                    if hasattr(inst, 'lod'):
+                        obj.dff['ipl_lod'] = inst.lod
 
             cached_2dfx = [obj for obj in model_cache if obj.dff.type == "2DFX"]
             for obj in cached_2dfx:
@@ -161,6 +168,13 @@ class Map_Import_Operator(bpy.types.Operator):
                 Map_Import_Operator.apply_transformation_to_object(
                     obj, inst
                 )
+                # Store IPL/IDE data for round-trip export
+                obj.dff['ipl_id'] = inst.id
+                obj.dff['ipl_model'] = self._object_data[inst.id].modelName
+                if hasattr(inst, 'interior'):
+                    obj.dff['ipl_interior'] = inst.interior
+                if hasattr(inst, 'lod'):
+                    obj.dff['ipl_lod'] = inst.lod
 
             # Set root object as 2DFX parent
             if root_objects:

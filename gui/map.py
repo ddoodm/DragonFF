@@ -322,3 +322,50 @@ class MapImportPanel(bpy.types.Panel):
 
         row = layout.row()
         row.operator("scene.dragonff_map_import")
+        
+        layout.separator()
+        
+        row = layout.row()
+        row.operator("export_ipl.scene", text="Export IPL")
+
+
+#######################################################
+class IPLObjectPanel(bpy.types.Panel):
+    """Panel for IPL object properties"""
+    bl_label = "DragonFF - IPL Properties"
+    bl_idname = "OBJECT_PT_ipl_props"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "object"
+    
+    @classmethod
+    def poll(cls, context):
+        return context.object is not None and context.object.dff.type == "OBJ"
+    
+    def draw(self, context):
+        layout = self.layout
+        obj = context.object
+        
+        # IPL Data
+        col = layout.column()
+        col.label(text="IPL Data:")
+        
+        row = col.row()
+        row.prop(obj.dff, '["ipl_id"]', text="Object ID")
+        
+        row = col.row()
+        row.prop(obj.dff, '["ipl_model"]', text="Model Name")
+        
+        row = col.row()
+        row.prop(obj.dff, '["ipl_interior"]', text="Interior")
+        
+        if context.scene.dff.game_version_dropdown == game_version.SA:
+            row = col.row()
+            row.prop(obj.dff, '["ipl_lod"]', text="LOD")
+        
+        # Show current transform
+        col.separator()
+        col.label(text="Transform (Read-only):")
+        col.label(text=f"Position: {obj.location.x:.3f}, {obj.location.y:.3f}, {obj.location.z:.3f}")
+        rot = obj.rotation_quaternion
+        col.label(text=f"Rotation: {rot.x:.3f}, {rot.y:.3f}, {rot.z:.3f}, {rot.w:.3f}")
